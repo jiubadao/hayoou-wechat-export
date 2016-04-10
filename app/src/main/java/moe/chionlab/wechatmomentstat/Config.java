@@ -51,6 +51,12 @@ public class Config {
     static public String SNS_DETAIL_FROM_BIN_METHOD;
     static public String SNS_OBJECT_FROM_BIN_METHOD;
 
+    public static String username="hayoou.com 账号";
+
+    public static boolean start_post = false;
+
+    public static int readline=0;
+
     static public void initWeChatVersion(String version) {
         for (int i=0;i<VERSIONS.length;i++) {
             if (VERSIONS[i].equals(version)) {

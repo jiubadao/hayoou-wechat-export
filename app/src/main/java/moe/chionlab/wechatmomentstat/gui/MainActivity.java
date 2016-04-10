@@ -10,27 +10,34 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.util.HashMap;
+
+import moe.chionlab.wechatmomentstat.Config;
 import moe.chionlab.wechatmomentstat.R;
 import moe.chionlab.wechatmomentstat.SnsStat;
 import moe.chionlab.wechatmomentstat.Task;
 import moe.chionlab.wechatmomentstat.common.Share;
+import moe.chionlab.wechatmomentstat.SubThread;
 
 
 public class MainActivity extends AppCompatActivity {
 
     Task task = null;
     SnsStat snsStat = null;
+    EditText usernameFileEditText = null;
+    SubThread SubThread = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         task = new Task(this.getApplicationContext());
-        
+
         setContentView(R.layout.activity_main);
 
         task.testRoot();
@@ -38,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.launch_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                usernameFileEditText = (EditText)findViewById(R.id.username);
+                Config.username=usernameFileEditText.getText().toString();
+
                 ((Button) findViewById(R.id.launch_button)).setText(R.string.exporting_sns);
                 ((Button) findViewById(R.id.launch_button)).setEnabled(false);
                 new RunningTask().execute();
@@ -57,10 +67,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
+
                 task.copySnsDB();
                 task.initSnsReader();
                 task.snsReader.run();
                 snsStat = new SnsStat(task.snsReader.getSnsList());
+                //Thread intervalSaveThread = null;
+
+                //task.SubThread.run();
+
+
+
             } catch (Throwable e) {
                 this.error = e;
             }

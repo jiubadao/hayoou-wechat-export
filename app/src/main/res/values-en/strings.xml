@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">WeChatMomentStat</string>
-    <string name="not_rooted">Failed to access WeChat SQLite Cache. Please grant WeChatMomentStat root access and retry.</string>
+    <string name="app_name">Hayoou WeChat export</string>
+    <string name="not_rooted">Failed to access WeChat SQLite Cache. Please grant Hayoou WeChat export root access and retry.</string>
     <string name="wechat_version_label">WeChat version</string>
     <string name="wechat_version_supported">WeChat version supported</string>
     <string name="wechat_version_unsupported">WeChat version not supported</string>
     <string name="wechat_not_found">WeChat not found</string>
     <string name="supported_wechat_versions">Supported WeChat version</string>
     <string name="launch">LAUNCH</string>
-    <string name="description_0">WeChatMomentStat helps you analyze and export your WeChat moments.</string>
+    <string name="description_0">Hayoou WeChat export helps you analyze and export your WeChat moments.</string>
     <string name="description_1">Please grant this app root access.</string>
     <string name="description_2">Click "LAUNCH" to start accessing your WeChat moments data. It may take minutes to finish.</string>
     <string name="exporting_sns">Exporting WeChat moments...</string>
@@ -30,7 +30,7 @@
     <string name="comment_details" formatted="false">(sent %d comments, got %d replies)</string>
     <string name="export_moments">Export Moments</string>
     <string name="share">Share</string>
-    <string name="share_suffix">--From WeChatMomentStat</string>
+    <string name="share_suffix">--From Hayoou WeChat export</string>
     <string name="filter">Filter</string>
     <string name="filter_by_friends">Filter by friends</string>
     <string name="done">Done</string>
@@ -41,19 +41,10 @@
     <string name="export_success">All selected moments are exported to %s</string>
     <string name="description_html">
         &lt;p&gt;
-        Author：
+        Powered by：
         &lt;/p&gt;
         &lt;p&gt;
-        &lt;a href="https://github.com/Chion82"&gt;Chion82(Chion Tang)&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p&gt;
-        &lt;a href="https://blog.chionlab.moe"&gt;Chion Tang的归宅开发部活动记录&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p&gt;
-        BUG Report:
-        &lt;/p&gt;
-        &lt;p&gt;
-        &lt;a href="https://github.com/Chion82/WeChatMomentStat-Android/issues"&gt;Issues&lt;/a&gt;
+        &lt;a href=http://f.hayoou.com/blogs/entry/%E5%93%88%E5%8F%8B%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"&gt;hayoou.com&lt;/a&gt;
         &lt;/p&gt;
     </string>
 </resources>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeChatMomentStat</string>
+    <string name="app_name">哈友微信朋友圈分析</string>
     <string name="not_rooted">查询微信缓存失败。请允许root权限后重试。</string>
     <string name="wechat_version_label">微信版本</string>
     <string name="wechat_version_supported">恭喜，支持该微信版本</string>
@@ -7,7 +7,7 @@
     <string name="wechat_not_found">找不到微信</string>
     <string name="supported_wechat_versions">支持的微信版本</string>
     <string name="launch">运行</string>
-    <string name="description_0">WeChatMomentStat可分析和导出你的朋友圈数据。</string>
+    <string name="description_0">哈友微信朋友圈分析可分析和导出你的朋友圈数据。</string>
     <string name="description_1">请确认已允许本APP获得root权限。</string>
     <string name="description_2">点击“运行”开始分析你的微信朋友圈。这将需要几分钟时间。</string>
     <string name="exporting_sns">正在导出朋友圈数据...</string>
@@ -30,7 +30,7 @@
     <string name="comment_details" formatted="false">（发评论 %d, 收到回复 %d)</string>
     <string name="export_moments">导出朋友圈数据</string>
     <string name="share">分享</string>
-    <string name="share_suffix">——分享自WeChatMomentStat</string>
+    <string name="share_suffix">——分享自哈友微信朋友圈导出工具</string>
     <string name="filter">筛选</string>
     <string name="filter_by_friends">按好友筛选</string>
     <string name="done">完成</string>
@@ -41,19 +41,11 @@
     <string name="export_success">已将所选朋友圈导出到 %s</string>
     <string name="description_html">
         &lt;p&gt;
-        作者：
+        Powered by：
         &lt;/p&gt;
         &lt;p&gt;
-        &lt;a href="https://github.com/Chion82"&gt;Chion82(Chion Tang)&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p&gt;
-        &lt;a href="https://blog.chionlab.moe"&gt;Chion Tang的归宅开发部活动记录&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p&gt;
-        BUG汇报:
-        &lt;/p&gt;
-        &lt;p&gt;
-        &lt;a href="https://github.com/Chion82/WeChatMomentStat-Android/issues"&gt;Issues&lt;/a&gt;
+        &lt;a href=http://f.hayoou.com/blogs/entry/%E5%93%88%E5%8F%8B%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"&gt;hayoou.com&lt;/a&gt;
         &lt;/p&gt;
     </string>
+    <string name="description_3">hayoou.com 账号</string>
 </resources>

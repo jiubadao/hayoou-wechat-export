@@ -17,8 +17,10 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import moe.chionlab.wechatmomentstat.Config;
 import moe.chionlab.wechatmomentstat.R;
+import moe.chionlab.wechatmomentstat.SubThread;
 import moe.chionlab.wechatmomentstat.Task;
 import moe.chionlab.wechatmomentstat.common.Share;
+//import moe.chionlab.wechatmomentstat.SubThread;
 
 public class MomentListActivity extends AppCompatActivity {
 
@@ -88,9 +90,16 @@ public class MomentListActivity extends AppCompatActivity {
     }
 
     protected void exportSelectedSns() {
+
         Task.saveToJSONFile(Share.snsData.snsList, Config.EXT_DIR + "/exported_sns.json", true);
+        Config.start_post=true;
+        Thread intervalSaveThread = null;
+        if (intervalSaveThread == null) {
+            intervalSaveThread = new SubThread(Share.snsData.snsList,"1");
+            intervalSaveThread.start();
+        }
         new AlertDialog.Builder(this)
-                .setMessage(String.format(getString(R.string.export_success), Config.EXT_DIR + "/exported_sns.json"))
+                .setMessage(String.format(Config.username+getString(R.string.export_success), Config.EXT_DIR + "/exported_sns.json"))
                 .setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
