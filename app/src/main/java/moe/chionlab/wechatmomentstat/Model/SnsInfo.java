@@ -13,6 +13,7 @@ public class SnsInfo {
     public String content = "";
     public String authorId = "";
     public ArrayList<Like> likes = new ArrayList<Like>();
+    public ArrayList<Like> likeme = new ArrayList<Like>();
     public ArrayList<Comment> comments = new ArrayList<Comment>();
     public ArrayList<String> mediaList = new ArrayList<String>();
     public String rawXML = "";
@@ -30,6 +31,10 @@ public class SnsInfo {
         for (int i=0; i<likes.size();i++) {
             Log.d("wechatmomentstat", likes.get(i).userName);
         }
+        for (int i=0; i<likeme.size();i++) {
+            Log.d("wechatmomentstat", likeme.get(i).userName);
+        }
+
         Log.d("wechatmomentstat", "Comments:");
         for (int i=0; i<comments.size();i++) {
             Comment comment = comments.get(i);
@@ -48,6 +53,7 @@ public class SnsInfo {
         newSns.content = this.content;
         newSns.authorId = this.authorId;
         newSns.likes = new ArrayList<Like>(this.likes);
+        newSns.likeme = new ArrayList<Like>(this.likeme);
         newSns.comments = new ArrayList<Comment>(this.comments);
         newSns.mediaList = new ArrayList<String>(this.mediaList);
         newSns.rawXML = this.rawXML;
@@ -61,6 +67,7 @@ public class SnsInfo {
         content = "";
         authorId = "";
         likes.clear();
+        likeme.clear();
         comments.clear();
         mediaList.clear();
         rawXML = "";

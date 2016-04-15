@@ -6,13 +6,13 @@
     <string name="wechat_version_unsupported">暂不支持该微信版本</string>
     <string name="wechat_not_found">找不到微信</string>
     <string name="supported_wechat_versions">支持的微信版本</string>
-    <string name="launch">运行</string>
+    <string name="launch">开始分析我的朋友圈</string>
     <string name="description_0">哈友微信朋友圈分析可分析和导出你的朋友圈数据。</string>
     <string name="description_1">请确认已允许本APP获得root权限。</string>
     <string name="description_2">点击“运行”开始分析你的微信朋友圈。这将需要几分钟时间。</string>
     <string name="exporting_sns">正在导出朋友圈数据...</string>
     <string name="stat_title">%s 的朋友圈统计数据</string>
-    <string name="from_date">从 %s 至今：</string>
+    <string name="from_date">哈友微信朋友圈分析\nhayoou.com/pyqfx\n\n从 %s 至今：</string>
     <string name="my_sent_moments">我发送了 %d 条朋友圈</string>
     <string name="my_sent_photos">我发了 %d 张图片</string>
     <string name="my_like_numbers">我点了 %d 个赞</string>
@@ -22,15 +22,16 @@
     <string name="my_replied_comments">我的评论被回复 %d 次</string>
     <string name="sent_moment_rank">发朋友圈最多的前5名：</string>
     <string name="sent_photo_rank">发图狂魔前5名：</string>
-    <string name="like_rank">点赞狂魔前5名：</string>
-    <string name="liked_rank">获得最多赞的前5名：</string>
+    <string name="like_rank">点赞狂魔前10名：</string>
+    <string name="likeme_rank">最爱我的前20名：</string>
+    <string name="liked_rank">获得最多赞的前10名：</string>
     <string name="sent_comment_rank">写评论最多的前5名：</string>
-    <string name="received_comment_rank">朋友圈评论数最多的前5名：</string>
+    <string name="received_comment_rank">朋友圈评论数最多的前10名：</string>
     <string name="cold_rank">经常被无视的前5名（收到回复数÷发评论数，发评论数>=15）:</string>
     <string name="comment_details" formatted="false">（发评论 %d, 收到回复 %d)</string>
     <string name="export_moments">导出朋友圈数据</string>
     <string name="share">分享</string>
-    <string name="share_suffix">——分享自哈友微信朋友圈导出工具</string>
+    <string name="share_suffix">——分享自哈友微信朋友圈导出工具\n hayoou.com/pyqfx</string>
     <string name="filter">筛选</string>
     <string name="filter_by_friends">按好友筛选</string>
     <string name="done">完成</string>
@@ -41,10 +42,16 @@
     <string name="export_success">已将所选朋友圈导出到 %s</string>
     <string name="description_html">
         &lt;p&gt;
-        Powered by：
+        哈友微信朋友圈分析工具使用教程/APP下载：
         &lt;/p&gt;
         &lt;p&gt;
-        &lt;a href=http://f.hayoou.com/blogs/entry/%E5%93%88%E5%8F%8B%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"&gt;hayoou.com&lt;/a&gt;
+        &lt;a  target="_blank" href="http://f.hayoou.com/blogs/entry/%E5%93%88%E5%8F%8B%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"&gt;hayoou.com/pyqfx&lt;/a&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+        Powered by:哈友娱乐
+        &lt;/p&gt;
+        &lt;p&gt;
+        &lt;a target="_blank" href="http://f.hayoou.com/"&gt;hayoou.com&lt;/a&gt;
         &lt;/p&gt;
     </string>
     <string name="description_3">hayoou.com 账号</string>

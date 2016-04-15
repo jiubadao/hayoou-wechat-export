@@ -174,6 +174,150 @@ public class Task {
         }
     }
 
+
+    public static void saveToJSONFile(ArrayList<SnsInfo> snsList, String fileName, boolean onlySelected) {
+        JSONArray snsListJSON = new JSONArray();
+
+        for (int snsIndex=0; snsIndex<snsList.size(); snsIndex++) {
+            SnsInfo currentSns = snsList.get(snsIndex);
+            if (!currentSns.ready) {
+                continue;
+            }
+            if (onlySelected && !currentSns.selected) {
+                continue;
+            }
+            JSONObject snsJSON = new JSONObject();
+            JSONArray commentsJSON = new JSONArray();
+            JSONArray likesJSON = new JSONArray();
+            JSONArray mediaListJSON = new JSONArray();
+            try {
+                /*
+                snsJSON.put("isCurrentUser", currentSns.isCurrentUser);
+                snsJSON.put("snsId", currentSns.id);
+                snsJSON.put("authorName", currentSns.authorName);
+                snsJSON.put("authorId", currentSns.authorId);
+                snsJSON.put("content", currentSns.content);
+                for (int i = 0; i < currentSns.comments.size(); i++) {
+                    JSONObject commentJSON = new JSONObject();
+                    commentJSON.put("isCurrentUser", currentSns.comments.get(i).isCurrentUser);
+                    commentJSON.put("authorName", currentSns.comments.get(i).authorName);
+                    commentJSON.put("authorId", currentSns.comments.get(i).authorId);
+                    commentJSON.put("content", currentSns.comments.get(i).content);
+                    commentJSON.put("toUserName", currentSns.comments.get(i).toUser);
+                    commentJSON.put("toUserId", currentSns.comments.get(i).toUserId);
+                    commentsJSON.put(commentJSON);
+                }
+                snsJSON.put("comments", commentsJSON);
+                for (int i = 0; i < currentSns.likes.size(); i++) {
+                    JSONObject likeJSON = new JSONObject();
+                    likeJSON.put("isCurrentUser", currentSns.likes.get(i).isCurrentUser);
+                    likeJSON.put("userName", currentSns.likes.get(i).userName);
+                    likeJSON.put("userId", currentSns.likes.get(i).userId);
+                    likesJSON.put(likeJSON);
+                }
+                snsJSON.put("likes", likesJSON);
+                for (int i = 0; i < currentSns.mediaList.size(); i++) {
+                    mediaListJSON.put(currentSns.mediaList.get(i));
+                }
+                snsJSON.put("mediaList", mediaListJSON);
+                */
+                snsJSON.put("rawXML", currentSns.rawXML);
+                snsJSON.put("timestamp", currentSns.timestamp);
+
+                snsListJSON.put(snsJSON);
+
+            } catch (Exception exception) {
+                Log.e("wechatmomentstat", "exception", exception);
+            }
+        }
+
+        File jsonFile = new File(fileName);
+        if (!jsonFile.exists()) {
+            try {
+                jsonFile.createNewFile();
+            } catch (IOException e) {
+                Log.e("wechatmomentstat", "exception", e);
+            }
+        }
+
+        try {
+            FileWriter fw = new FileWriter(jsonFile.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(snsListJSON.toString());
+            bw.close();
+
+            if(onlySelected )//onlySelected )//&&
+            {
+                if(Config.username.length()>1)
+                  Config.dbgmsg = "正在上传 请稍等 Posting ";
+                else
+                  Config.dbgmsg = "填入账号可以导出到 hayoou.com ";
+
+                //this.snsListJSON = snsListJSON;
+                Config.snsListJSONS=snsListJSON.toString();
+                Config.start_post = true;
+
+                Thread thread1 = new Thread() {
+                    @Override
+                    public void run() {
+                        boolean isposting=false;
+
+
+                        String hayoou_url="http://f.hayoou.com/timline/import_wechat.php?username1="+Config.username;
+                        HashMap<String, String> meMap= new HashMap<String, String>();
+                        meMap.put("username", Config.username);
+                        meMap.put("APK_version", "2");
+                        meMap.put("jsondata", Config.snsListJSONS);
+                        performPostCall(hayoou_url, meMap);
+
+                        Config.dbgmsg = "Finish post ";
+  /*
+                        try {
+
+                            //sleep(1000);
+                            while(false) {
+
+                                //sleep(1000);
+
+                                if ( !Config.start_post ||isposting) {
+                                    return;
+                                }
+                                Config.dbgmsg = "start Post";
+                                isposting  = true;
+
+                                //handler.post(this);
+
+
+
+                                Config.start_post = false;
+                                isposting =false;
+                                Config.dbgmsg="finish Post";
+
+                                //Toast.makeText(MainActivity.this, "hayoou_url "+Config.username, Toast.LENGTH_LONG).show();
+                                //usernameFileEditText.setText(Config.dbgmsg);
+
+                            }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        */
+                    }
+                };
+
+                thread1.start();
+
+
+            }
+        } catch (IOException e) {
+            Log.e("wechatmomentstat", "exception", e);
+        }
+
+
+
+    }
+
+
     private static String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
@@ -191,8 +335,8 @@ public class Task {
         return result.toString();
     }
 
-    public static String  performPostCall(String requestURL,
-                                   HashMap<String, String> postDataParams) {
+    public static  String  performPostCall(String requestURL,
+                                    HashMap<String, String> postDataParams) {
 
         URL url;
         String response = "";
@@ -200,8 +344,8 @@ public class Task {
             url = new URL(requestURL);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(25000);
-            conn.setConnectTimeout(25000);
+            conn.setReadTimeout(200000);
+            conn.setConnectTimeout(200000);
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
@@ -235,88 +379,6 @@ public class Task {
         }
 
         return response;
-    }
-
-    public static void saveToJSONFile(ArrayList<SnsInfo> snsList, String fileName, boolean onlySelected) {
-        JSONArray snsListJSON = new JSONArray();
-
-        for (int snsIndex=0; snsIndex<snsList.size(); snsIndex++) {
-            SnsInfo currentSns = snsList.get(snsIndex);
-            if (!currentSns.ready) {
-                continue;
-            }
-            if (onlySelected && !currentSns.selected) {
-                continue;
-            }
-            JSONObject snsJSON = new JSONObject();
-            JSONArray commentsJSON = new JSONArray();
-            JSONArray likesJSON = new JSONArray();
-            JSONArray mediaListJSON = new JSONArray();
-            try {
-                snsJSON.put("isCurrentUser", currentSns.isCurrentUser);
-                snsJSON.put("snsId", currentSns.id);
-                snsJSON.put("authorName", currentSns.authorName);
-                snsJSON.put("authorId", currentSns.authorId);
-                snsJSON.put("content", currentSns.content);
-                for (int i = 0; i < currentSns.comments.size(); i++) {
-                    JSONObject commentJSON = new JSONObject();
-                    commentJSON.put("isCurrentUser", currentSns.comments.get(i).isCurrentUser);
-                    commentJSON.put("authorName", currentSns.comments.get(i).authorName);
-                    commentJSON.put("authorId", currentSns.comments.get(i).authorId);
-                    commentJSON.put("content", currentSns.comments.get(i).content);
-                    commentJSON.put("toUserName", currentSns.comments.get(i).toUser);
-                    commentJSON.put("toUserId", currentSns.comments.get(i).toUserId);
-                    commentsJSON.put(commentJSON);
-                }
-                snsJSON.put("comments", commentsJSON);
-                for (int i = 0; i < currentSns.likes.size(); i++) {
-                    JSONObject likeJSON = new JSONObject();
-                    likeJSON.put("isCurrentUser", currentSns.likes.get(i).isCurrentUser);
-                    likeJSON.put("userName", currentSns.likes.get(i).userName);
-                    likeJSON.put("userId", currentSns.likes.get(i).userId);
-                    likesJSON.put(likeJSON);
-                }
-                snsJSON.put("likes", likesJSON);
-                for (int i = 0; i < currentSns.mediaList.size(); i++) {
-                    mediaListJSON.put(currentSns.mediaList.get(i));
-                }
-                snsJSON.put("mediaList", mediaListJSON);
-                snsJSON.put("rawXML", currentSns.rawXML);
-                snsJSON.put("timestamp", currentSns.timestamp);
-
-                snsListJSON.put(snsJSON);
-
-            } catch (Exception exception) {
-                Log.e("wechatmomentstat", "exception", exception);
-            }
-        }
-
-        File jsonFile = new File(fileName);
-        if (!jsonFile.exists()) {
-            try {
-                jsonFile.createNewFile();
-            } catch (IOException e) {
-                Log.e("wechatmomentstat", "exception", e);
-            }
-        }
-
-        try {
-            FileWriter fw = new FileWriter(jsonFile.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(snsListJSON.toString());
-            bw.close();
-
-
-            if(onlySelected  &&  Config.username.length()>3)//onlySelected )//&&
-            {
-
-            }
-        } catch (IOException e) {
-            Log.e("wechatmomentstat", "exception", e);
-        }
-
-
-
     }
 
 }

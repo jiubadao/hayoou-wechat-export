@@ -14,7 +14,7 @@ public class Config {
 
     final static public String WECHAT_PACKAGE = "com.tencent.mm";
 
-    final static public String[] VERSIONS = {"6.3.13.49_r4080b63", "6.3.13.64_r4488992"};
+    final static public String[] VERSIONS = {"6.3.13.49_r4080b63", "6.3.13.64_r4488992","6.3.15"};
     final static public String[] PROTOCAL_SNS_DETAIL_CLASSES = {"com.tencent.mm.protocal.b.atp", "com.tencent.mm.protocal.b.atp"};
     final static public String[] PROTOCAL_SNS_DETAIL_METHODS = {"a", "a"};
     final static public String[] SNS_XML_GENERATOR_CLASSES = {"com.tencent.mm.plugin.sns.f.i", "com.tencent.mm.plugin.sns.f.i"};
@@ -51,11 +51,13 @@ public class Config {
     static public String SNS_DETAIL_FROM_BIN_METHOD;
     static public String SNS_OBJECT_FROM_BIN_METHOD;
 
-    public static String username="hayoou.com 账号";
-
+    public static String username="";
+    public static String dbgmsg="";
+    public static String snsListJSONS="";
     public static boolean start_post = false;
 
     public static int readline=0;
+    public static String currentUserId="";
 
     static public void initWeChatVersion(String version) {
         for (int i=0;i<VERSIONS.length;i++) {

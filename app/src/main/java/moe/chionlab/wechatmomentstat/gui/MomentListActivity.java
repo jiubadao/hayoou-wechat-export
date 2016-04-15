@@ -9,11 +9,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import moe.chionlab.wechatmomentstat.Config;
 import moe.chionlab.wechatmomentstat.R;
@@ -25,7 +40,8 @@ import moe.chionlab.wechatmomentstat.common.Share;
 public class MomentListActivity extends AppCompatActivity {
 
     public static boolean snsListUpdated = false;
-
+    Thread intervalSaveThread = null;
+    //SubThread SubThread=null;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -93,13 +109,15 @@ public class MomentListActivity extends AppCompatActivity {
 
         Task.saveToJSONFile(Share.snsData.snsList, Config.EXT_DIR + "/exported_sns.json", true);
         Config.start_post=true;
-        Thread intervalSaveThread = null;
+
+/*
         if (intervalSaveThread == null) {
             intervalSaveThread = new SubThread(Share.snsData.snsList,"1");
             intervalSaveThread.start();
         }
+        */
         new AlertDialog.Builder(this)
-                .setMessage(String.format(Config.username+getString(R.string.export_success), Config.EXT_DIR + "/exported_sns.json"))
+                .setMessage(String.format(Config.dbgmsg+Config.username+getString(R.string.export_success), Config.EXT_DIR + "/exported_sns.json"))
                 .setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -107,4 +125,7 @@ public class MomentListActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
+
+
 }

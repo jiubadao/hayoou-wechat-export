@@ -6,13 +6,13 @@
     <string name="wechat_version_unsupported">WeChat version not supported</string>
     <string name="wechat_not_found">WeChat not found</string>
     <string name="supported_wechat_versions">Supported WeChat version</string>
-    <string name="launch">LAUNCH</string>
+    <string name="launch">Start analysis</string>
     <string name="description_0">Hayoou WeChat export helps you analyze and export your WeChat moments.</string>
     <string name="description_1">Please grant this app root access.</string>
     <string name="description_2">Click "LAUNCH" to start accessing your WeChat moments data. It may take minutes to finish.</string>
     <string name="exporting_sns">Exporting WeChat moments...</string>
     <string name="stat_title">%s \'s Moments Statistics</string>
-    <string name="from_date">From %s :</string>
+    <string name="from_date">Hayoou wechat Moments Statistics\nhayoou.com/pyqfx\n\n From %s :</string>
     <string name="my_sent_moments">I have sent %d moments.</string>
     <string name="my_sent_photos">I have post %d photos.</string>
     <string name="my_like_numbers">I have sent %d likes.</string>
@@ -22,15 +22,16 @@
     <string name="my_replied_comments">I have received %d comment replies.</string>
     <string name="sent_moment_rank">Top 5 of friends who sent most moments:</string>
     <string name="sent_photo_rank">Top 5 of friends who post most photos:</string>
-    <string name="like_rank">Top 5 of friends who sent most likes:</string>
-    <string name="liked_rank">Top 5 of friends who received most likes:</string>
+    <string name="like_rank">Top 10 of friends who sent most likes:</string>
+    <string name="likeme_rank">Top 20 of friends who Likes me:</string>
+    <string name="liked_rank">Top 10 of friends who received most likes:</string>
     <string name="sent_comment_rank">Top 5 of friends who wrote most comments:</string>
-    <string name="received_comment_rank">Top 5 of friends who received most comments:</string>
+    <string name="received_comment_rank">Top 10 of friends who received most comments:</string>
     <string name="cold_rank">Top 5 of friends who were usually ignored:</string>
     <string name="comment_details" formatted="false">(sent %d comments, got %d replies)</string>
     <string name="export_moments">Export Moments</string>
     <string name="share">Share</string>
-    <string name="share_suffix">--From Hayoou WeChat export</string>
+    <string name="share_suffix">--From Hayoou WeChat export\n hayoou.com/pyqfx</string>
     <string name="filter">Filter</string>
     <string name="filter_by_friends">Filter by friends</string>
     <string name="done">Done</string>
@@ -41,10 +42,17 @@
     <string name="export_success">All selected moments are exported to %s</string>
     <string name="description_html">
         &lt;p&gt;
-        Powered by：
+        Hayoou WeChat export Tool usage/APP Download：
         &lt;/p&gt;
         &lt;p&gt;
-        &lt;a href=http://f.hayoou.com/blogs/entry/%E5%93%88%E5%8F%8B%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"&gt;hayoou.com&lt;/a&gt;
+        &lt;a target="_blank" href="http://f.hayoou.com/blogs/entry/%E5%93%88%E5%8F%8B%E5%BE%AE%E4%BF%A1%E6%9C%8B%E5%8F%8B%E5%9C%88%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"&gt;hayoou.com/pyqfx&lt;/a&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+        Powered by:Hayoou Entertainment
+        &lt;/p&gt;
+        &lt;p&gt;
+        &lt;a target="_blank" href="http://f.hayoou.com/"&gt;hayoou.com&lt;/a&gt;
         &lt;/p&gt;
     </string>
+    <string name="description_3">hayoou.com Account</string>
 </resources>

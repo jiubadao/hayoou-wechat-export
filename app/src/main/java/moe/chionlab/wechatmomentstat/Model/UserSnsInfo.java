@@ -11,6 +11,7 @@ public class UserSnsInfo {
     public ArrayList<SnsInfo> snsList = new ArrayList<SnsInfo>();
     public int likeCount = 0;
     public int likedCount = 0;
+    public int likemeCount=0;
     public int sentCommentCount = 0;
     public int receivedCommentCount = 0;
     public int repliedCommentCount = 0;

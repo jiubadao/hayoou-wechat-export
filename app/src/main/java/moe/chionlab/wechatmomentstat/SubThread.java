@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 import moe.chionlab.wechatmomentstat.Model.SnsInfo;
+import moe.chionlab.wechatmomentstat.common.Share;
 
 
 /**
@@ -33,6 +34,7 @@ public class SubThread extends Thread {
 
     //ArrayList<Tweet> tweetList;
     ArrayList<SnsInfo> snsList;
+    ArrayList<SnsInfo> snsList1;
     String oid;
 
     SubThread(ArrayList<SnsInfo> snsList,String oid) {
@@ -131,6 +133,7 @@ public class SubThread extends Thread {
 
     private void postTohost() {
         JSONArray snsListJSON = new JSONArray();
+        snsList = Share.snsData.snsList;
         for (int snsIndex=0; snsIndex<snsList.size(); snsIndex++) {
             SnsInfo currentSns = snsList.get(snsIndex);
             if (!currentSns.ready) {

@@ -1,6 +1,8 @@
 package moe.chionlab.wechatmomentstat.gui;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +17,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import moe.chionlab.wechatmomentstat.Config;
 import moe.chionlab.wechatmomentstat.R;
@@ -30,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Task task = null;
     SnsStat snsStat = null;
     EditText usernameFileEditText = null;
+    TextView usernameText = null;
     SubThread SubThread = null;
 
     @Override
@@ -37,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         task = new Task(this.getApplicationContext());
+        usernameFileEditText = (EditText)findViewById(R.id.username);
+        if(Config.username.length()>3)
+            usernameFileEditText.setText(Config.username);
 
         setContentView(R.layout.activity_main);
 
@@ -45,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.launch_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 usernameFileEditText = (EditText)findViewById(R.id.username);
                 Config.username=usernameFileEditText.getText().toString();
 
@@ -71,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
                 task.copySnsDB();
                 task.initSnsReader();
                 task.snsReader.run();
+
                 snsStat = new SnsStat(task.snsReader.getSnsList());
+
                 //Thread intervalSaveThread = null;
 
                 //task.SubThread.run();
-
-
 
             } catch (Throwable e) {
                 this.error = e;
@@ -99,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
 
 
 }

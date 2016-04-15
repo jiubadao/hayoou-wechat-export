@@ -1,5 +1,7 @@
 package moe.chionlab.wechatmomentstat;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,6 +19,7 @@ public class SnsStat {
     public ArrayList<UserSnsInfo> userSnsList = new ArrayList<UserSnsInfo>();
     public ArrayList<UserSnsInfo> momentRank = null;
     public ArrayList<UserSnsInfo> likeRank = null;
+    public ArrayList<UserSnsInfo> likemeRank = null;
     public ArrayList<UserSnsInfo> likedRank = null;
     public ArrayList<UserSnsInfo> sentCommentRank = null;
     public ArrayList<UserSnsInfo> receivedCommentRank = null;
@@ -47,6 +50,7 @@ public class SnsStat {
                 userSnsInfo.userName = snsInfo.authorName;
             userSnsInfo.snsList.add(snsInfo);
             userSnsInfo.likedCount += snsInfo.likes.size();
+            //userSnsInfo.likemeCount += snsInfo.likeme.size();
             userSnsInfo.receivedCommentCount += snsInfo.comments.size();
             userSnsInfo.photoNumbers += snsInfo.mediaList.size();
             for (int commentId=0;commentId<snsInfo.comments.size();commentId++) {
@@ -58,17 +62,28 @@ public class SnsStat {
                     replyToUser.repliedCommentCount++;
                 }
             }
+
             for (int likeId=0;likeId<snsInfo.likes.size();likeId++) {
                 SnsInfo.Like like = snsInfo.likes.get(likeId);
                 UserSnsInfo liker = getUserSnsInfo(like.userId);
                 liker.likeCount++;
             }
+
+            for (int likeId=0;likeId<snsInfo.likeme.size();likeId++) {
+                SnsInfo.Like likeme = snsInfo.likeme.get(likeId);
+                UserSnsInfo liker = getUserSnsInfo(likeme.userId);
+                liker.likemeCount++;
+            }
+
+
+
         }
     }
 
     protected void generateRanks() {
         momentRank = new ArrayList<UserSnsInfo>(userSnsList);
         likeRank = new ArrayList<UserSnsInfo>(userSnsList);
+        likemeRank = new ArrayList<UserSnsInfo>(userSnsList);
         likedRank = new ArrayList<UserSnsInfo>(userSnsList);
         sentCommentRank = new ArrayList<UserSnsInfo>(userSnsList);
         receivedCommentRank = new ArrayList<UserSnsInfo>(userSnsList);
@@ -94,6 +109,12 @@ public class SnsStat {
             @Override
             public int compare(UserSnsInfo lhs, UserSnsInfo rhs) {
                 return rhs.likeCount - lhs.likeCount;
+            }
+        });
+        Collections.sort(likemeRank, new Comparator<UserSnsInfo>() {
+            @Override
+            public int compare(UserSnsInfo lhs, UserSnsInfo rhs) {
+                return rhs.likemeCount - lhs.likemeCount;
             }
         });
         Collections.sort(likedRank, new Comparator<UserSnsInfo>() {

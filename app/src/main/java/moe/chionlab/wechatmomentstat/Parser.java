@@ -1,5 +1,7 @@
 package moe.chionlab.wechatmomentstat;
 
+import android.util.Log;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -126,6 +128,7 @@ public class Parser {
             Object likeObject = likeList.get(i);
             parseSnsObjectExt(likeObject, false, matchSns);
         }
+
     }
 
     static public void parseSnsObjectExt(Object apzObject, boolean isComment, SnsInfo matchSns) throws Throwable {
@@ -180,15 +183,35 @@ public class Parser {
             if (((String)userId).equals("")) {
                 return;
             }
+
+            SnsInfo.Like newLike = new SnsInfo.Like();
+            newLike.userId = (String)userId;
+            if(nickname!=null)
+                newLike.userName = (String)nickname;
+            else
+                newLike.userName = (String)userId;
+            //Log.d("wechatmomentstat", "like me isCurrentUser check");
+            //Log.d("wechatmomentstat", "currentuserid "+Config.currentUserId);
+            //Log.d("wechatmomentstat", "authorId"+matchSns.authorId);
+            if(Config.currentUserId.equals((String)matchSns.authorId)) {
+                boolean skip =false;
+                //Log.d("wechatmomentstat", "like me isCurrentUser ");
+                for (int i = 0; i < matchSns.likeme.size(); i++) {
+                    if (matchSns.likeme.get(i).userId.equals((String)userId)) {
+                        skip=true;
+                    }
+                }
+                if(!skip)
+                    matchSns.likeme.add(newLike);
+            }
+
             for (int i = 0; i < matchSns.likes.size(); i++) {
                 if (matchSns.likes.get(i).userId.equals((String)userId)) {
                     return;
                 }
             }
-            SnsInfo.Like newLike = new SnsInfo.Like();
-            newLike.userId = (String)userId;
-            newLike.userName = (String)nickname;
             matchSns.likes.add(newLike);
+
         }
     }
 

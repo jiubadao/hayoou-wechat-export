@@ -51,6 +51,10 @@ public class SnsReader {
         while (cursor.moveToNext()) {
             addSnsInfoFromCursor(cursor);
         }
+        if(this.currentUserId.length()>4)
+            Config.currentUserId = this.currentUserId;
+        //Config.currentUserName = this.currentUserId;
+
         cursor.close();
         database.close();
     }
@@ -62,6 +66,8 @@ public class SnsReader {
         }
         cursor.close();
         Log.d("wechatmomentstat", "Current userID=" + this.currentUserId);
+        if(this.currentUserId.length()>4)
+            Config.currentUserId=this.currentUserId;
     }
 
     protected void addSnsInfoFromCursor(Cursor cursor) throws Throwable {
