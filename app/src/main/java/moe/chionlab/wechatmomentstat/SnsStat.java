@@ -49,8 +49,9 @@ public class SnsStat {
             UserSnsInfo userSnsInfo = getUserSnsInfo(snsInfo.authorId);
             if (userSnsInfo.userName == null)
                 userSnsInfo.userName = snsInfo.userName;
+            userSnsInfo.authorName = snsInfo.authorName;
             if (userSnsInfo.authorName == null)
-                userSnsInfo.authorName = snsInfo.authorName;
+                userSnsInfo.authorName = snsInfo.userName;
             userSnsInfo.snsList.add(snsInfo);
             userSnsInfo.likedCount += snsInfo.likes.size();
             //userSnsInfo.likemeCount += snsInfo.likeme.size();

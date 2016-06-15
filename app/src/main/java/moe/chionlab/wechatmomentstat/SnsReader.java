@@ -72,7 +72,7 @@ public class SnsReader {
         byte[] snsObjectBin = cursor.getBlob(cursor.getColumnIndex("attrBuf"));
         SnsInfo newSns = parser.parseSnsAllFromBin(snsDetailBin, snsObjectBin);
         newSns.userName = cursor.getString(cursor.getColumnIndex("userName"));
-        Log.d("wechatmomentstat", "Current username =" + newSns.userName);
+        //Log.d("wechatmomentstat", "Current username =" + newSns.userName);
 
         for (int i=0;i<snsList.size();i++) {
             if (snsList.get(i).id.equals(newSns.id)) {

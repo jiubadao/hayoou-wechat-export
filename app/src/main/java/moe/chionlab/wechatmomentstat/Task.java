@@ -183,6 +183,14 @@ public class Task {
 
     public static void saveToJSONFile(ArrayList<SnsInfo> snsList, String fileName, boolean onlySelected) {
         JSONArray snsListJSON = new JSONArray();
+        JSONObject snsJSON1 = new JSONObject();
+        try {
+            snsJSON1.put("currentUserId", Config.currentUserId);
+            snsJSON1.put("hayoou_username", Config.username);
+        } catch (Exception exception) {
+            Log.e("wechatmomentstat", "exception", exception);
+        }
+        snsListJSON.put(snsJSON1);
 
         for (int snsIndex=0; snsIndex<snsList.size(); snsIndex++) {
             SnsInfo currentSns = snsList.get(snsIndex);

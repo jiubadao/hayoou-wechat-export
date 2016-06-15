@@ -51,6 +51,7 @@ public class SnsInfo {
         SnsInfo newSns = new SnsInfo();
         newSns.id = this.id;
         newSns.authorName = this.authorName;
+        newSns.userName = this.userName;
         newSns.content = this.content;
         newSns.authorId = this.authorId;
         newSns.likes = new ArrayList<Like>(this.likes);
@@ -65,6 +66,7 @@ public class SnsInfo {
     public void clear() {
         id = "";
         authorName = "";
+        userName = "";
         content = "";
         authorId = "";
         likes.clear();

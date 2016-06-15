@@ -106,10 +106,10 @@ public class MomentStatActivity extends AppCompatActivity {
         for (int i=0;i<num;i++) {
             try {
                 UserSnsInfo userSnsInfo = snsStat.likemeRank.get(i);
-                if(userSnsInfo.userName!=null)
-                    showText += userSnsInfo.userName;
+                if(userSnsInfo.authorName!=null)
+                    showText += userSnsInfo.authorName;
                 else
-                    showText += userSnsInfo.userId;
+                    showText += userSnsInfo.userName;
                 showText += "   (" + userSnsInfo.likemeCount + ")\n";
             } catch (Exception e) {
 
@@ -120,10 +120,10 @@ public class MomentStatActivity extends AppCompatActivity {
         for (int i=0;i<10;i++) {
             try {
                 UserSnsInfo userSnsInfo = snsStat.likeRank.get(i);
-                if(userSnsInfo.userName!=null)
-                    showText += userSnsInfo.userName;
+                if(userSnsInfo.authorName!=null)
+                    showText += userSnsInfo.authorName;
                 else
-                    showText += userSnsInfo.userId;
+                    showText += userSnsInfo.userName;
                 showText += "   (" + userSnsInfo.likeCount + ")\n";
             } catch (Exception e) {
 
@@ -134,10 +134,10 @@ public class MomentStatActivity extends AppCompatActivity {
         for (int i=0;i<5;i++) {
             try {
                 UserSnsInfo userSnsInfo = snsStat.momentRank.get(i);
-                if(userSnsInfo.userName!=null)
-                    showText += userSnsInfo.userName;
+                if(userSnsInfo.authorName!=null)
+                    showText += userSnsInfo.authorName;
                 else
-                    showText += userSnsInfo.userId;
+                    showText += userSnsInfo.userName;
                 showText += "   (" + userSnsInfo.snsList.size() + ")\n";
             } catch (Exception e) {
 
@@ -148,10 +148,10 @@ public class MomentStatActivity extends AppCompatActivity {
         for (int i=0;i<5;i++) {
             try {
                 UserSnsInfo userSnsInfo = snsStat.photoRank.get(i);
-                if(userSnsInfo.userName!=null)
-                    showText += userSnsInfo.userName;
+                if(userSnsInfo.authorName!=null)
+                    showText += userSnsInfo.authorName;
                 else
-                    showText += userSnsInfo.userId;
+                    showText += userSnsInfo.userName;
                 showText += "   (" + userSnsInfo.photoNumbers + ")\n";
             } catch (Exception e) {
 
@@ -163,10 +163,10 @@ public class MomentStatActivity extends AppCompatActivity {
         for (int i=0;i<10;i++) {
             try {
                 UserSnsInfo userSnsInfo = snsStat.likedRank.get(i);
-                if(userSnsInfo.userName!=null)
-                    showText += userSnsInfo.userName;
+                if(userSnsInfo.authorName!=null)
+                    showText += userSnsInfo.authorName;
                 else
-                    showText += userSnsInfo.userId;
+                    showText += userSnsInfo.userName;
                 showText += "   (" + userSnsInfo.likedCount + ")\n";
             } catch (Exception e) {
 
@@ -178,10 +178,10 @@ public class MomentStatActivity extends AppCompatActivity {
         for (int i=0;i<5;i++) {
             try {
                 UserSnsInfo userSnsInfo = snsStat.sentCommentRank.get(i);
-                if(userSnsInfo.userName!=null)
-                    showText += userSnsInfo.userName;
+                if(userSnsInfo.authorName!=null)
+                    showText += userSnsInfo.authorName;
                 else
-                    showText += userSnsInfo.userId;
+                    showText += userSnsInfo.userName;
                 showText += "   (" + userSnsInfo.sentCommentCount + ")\n";
             } catch (Exception e) {
 
@@ -193,10 +193,10 @@ public class MomentStatActivity extends AppCompatActivity {
         for (int i=0;i<10;i++) {
             try {
                 UserSnsInfo userSnsInfo = snsStat.receivedCommentRank.get(i);
-                if(userSnsInfo.userName!=null)
-                    showText += userSnsInfo.userName;
+                if(userSnsInfo.authorName!=null)
+                    showText += userSnsInfo.authorName;
                 else
-                    showText += userSnsInfo.userId;
+                    showText += userSnsInfo.userName;
                 showText += "   (" + userSnsInfo.receivedCommentCount + ")\n";
             } catch (Exception e) {
 
@@ -208,10 +208,10 @@ public class MomentStatActivity extends AppCompatActivity {
         for (int i=0;i<5;i++) {
             try {
                 UserSnsInfo userSnsInfo = snsStat.coldRank.get(i);
-                if(userSnsInfo.userName!=null)
-                    showText += userSnsInfo.userName;
+                if(userSnsInfo.authorName!=null)
+                    showText += userSnsInfo.authorName;
                 else
-                    showText += userSnsInfo.userId;
+                    showText += userSnsInfo.userName;
                 showText += String.format(getString(R.string.comment_details), userSnsInfo.sentCommentCount, userSnsInfo.repliedCommentCount) + "\n";
             } catch (Exception e) {
 
