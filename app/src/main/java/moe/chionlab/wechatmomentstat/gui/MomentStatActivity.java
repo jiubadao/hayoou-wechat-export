@@ -88,7 +88,7 @@ public class MomentStatActivity extends AppCompatActivity {
 
     protected void showMomentStat() {
         UserSnsInfo mySnsInfo = snsStat.getUserSnsInfo(snsStat.currentUserId);
-        setTitle(String.format(getString(R.string.stat_title), mySnsInfo.authorName+"("+mySnsInfo.userName+")"));
+        setTitle(String.format(getString(R.string.stat_title), mySnsInfo.authorName));//+"("+mySnsInfo.userName+")"
         String showText = String.format(getString(R.string.from_date), new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(snsStat.earliestTimestamp * 1000))) + "\n";
         showText += String.format(getString(R.string.my_sent_moments), mySnsInfo.snsList.size()) + "\n";
         showText += String.format(getString(R.string.my_sent_photos), mySnsInfo.photoNumbers) + "\n";

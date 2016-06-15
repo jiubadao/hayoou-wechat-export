@@ -294,6 +294,7 @@ public class Task {
                             outputStream.writeBytes("tar jcf upload_json.bz2 "+ Config.filename+"\n");//
                             outputStream.writeBytes("sleep 4\n");
                             outputStream.writeBytes("chmod 777 upload_json.bz2\n");
+                            outputStream.writeBytes("chmod 777 "+ Config.filename+"\n");
                             outputStream.writeBytes("exit\n");
                             outputStream.flush();
 

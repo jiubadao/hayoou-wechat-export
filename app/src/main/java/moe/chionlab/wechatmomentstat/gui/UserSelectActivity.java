@@ -83,7 +83,7 @@ public class UserSelectActivity extends AppCompatActivity {
         for (int i=0;i<snsSizeRank.size();i++) {
             userSnsInfo2 = snsSizeRank.get(i);
             CheckBox userCheckBox = new CheckBox(this);
-            userCheckBox.setText(userSnsInfo2.authorName + "(" + userSnsInfo2.userName + ")" + "(" + String.format(getString(R.string.user_moment_count), userSnsInfo2.snsList.size()) + ")");
+            userCheckBox.setText(userSnsInfo2.authorName + "(" + userSnsInfo2.userId + ")" + "(" + String.format(getString(R.string.user_moment_count), userSnsInfo2.snsList.size()) + ")");
             userListContainer.addView(userCheckBox);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)userCheckBox.getLayoutParams();
             layoutParams.setMargins(5, 5, 5, 5);
