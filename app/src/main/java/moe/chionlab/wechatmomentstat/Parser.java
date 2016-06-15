@@ -162,6 +162,25 @@ public class Parser {
             newComment.authorId = (String) authorId;
             newComment.toUserId = (String) replyToUserId;
 
+            SnsInfo.Like newLike = new SnsInfo.Like();
+            newLike.userId = (String)authorId;
+            //if(authorName!=null)
+                newLike.userName = (String)authorName;
+            //else
+                //newLike.userName = (String)authorId;
+            if(Config.currentUserId.equals((String)matchSns.authorId)) {
+                boolean skip =false;
+                //Log.d("wechatmomentstat", "like me isCurrentUser ");
+                for (int i = 0; i < matchSns.likeme.size(); i++) {
+                    if (matchSns.likeme.get(i).userId.equals((String)authorId)) {
+                        skip=true;
+                    }
+                }
+                if(!skip)
+                    matchSns.likeme.add(newLike);
+            }
+
+
             for (int i = 0; i < matchSns.comments.size(); i++) {
                 SnsInfo.Comment loadedComment = matchSns.comments.get(i);
                 if (replyToUserId != null && loadedComment.authorId.equals((String) replyToUserId)) {
@@ -186,10 +205,10 @@ public class Parser {
 
             SnsInfo.Like newLike = new SnsInfo.Like();
             newLike.userId = (String)userId;
-            if(nickname!=null)
+            //if(nickname!=null)
                 newLike.userName = (String)nickname;
-            else
-                newLike.userName = (String)userId;
+            //else
+                //newLike.userName = (String)userId;
             //Log.d("wechatmomentstat", "like me isCurrentUser check");
             //Log.d("wechatmomentstat", "currentuserid "+Config.currentUserId);
             //Log.d("wechatmomentstat", "authorId"+matchSns.authorId);

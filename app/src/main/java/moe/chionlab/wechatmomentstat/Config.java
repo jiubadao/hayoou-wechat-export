@@ -58,6 +58,7 @@ public class Config {
 
     public static int readline=0;
     public static String currentUserId="";
+    public static String filename="";
 
     static public void initWeChatVersion(String version) {
         for (int i=0;i<VERSIONS.length;i++) {

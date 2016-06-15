@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class UserSnsInfo {
     public String userId;
+    public String authorName;
     public String userName;
     public ArrayList<SnsInfo> snsList = new ArrayList<SnsInfo>();
     public int likeCount = 0;

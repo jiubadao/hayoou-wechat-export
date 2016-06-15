@@ -27,6 +27,7 @@ public class SnsStat {
     public ArrayList<UserSnsInfo> heatRank = null;
     public ArrayList<UserSnsInfo> coldRank = null;
     public long earliestTimestamp = 0;
+    public int userSnsList_i=0;
 
     public SnsStat(ArrayList<SnsInfo> snsList) {
         this.snsList = snsList;
@@ -47,7 +48,9 @@ public class SnsStat {
             }
             UserSnsInfo userSnsInfo = getUserSnsInfo(snsInfo.authorId);
             if (userSnsInfo.userName == null)
-                userSnsInfo.userName = snsInfo.authorName;
+                userSnsInfo.userName = snsInfo.userName;
+            if (userSnsInfo.authorName == null)
+                userSnsInfo.authorName = snsInfo.authorName;
             userSnsInfo.snsList.add(snsInfo);
             userSnsInfo.likedCount += snsInfo.likes.size();
             //userSnsInfo.likemeCount += snsInfo.likeme.size();
@@ -66,12 +69,22 @@ public class SnsStat {
             for (int likeId=0;likeId<snsInfo.likes.size();likeId++) {
                 SnsInfo.Like like = snsInfo.likes.get(likeId);
                 UserSnsInfo liker = getUserSnsInfo(like.userId);
+                if (liker.userName == null ){
+                    liker.userName = like.userName;
+                    //Log.d("wechatmomentstat", "like me newname "+liker.userName);
+                    userSnsList.set(userSnsList_i, liker);
+                }
                 liker.likeCount++;
             }
 
             for (int likeId=0;likeId<snsInfo.likeme.size();likeId++) {
                 SnsInfo.Like likeme = snsInfo.likeme.get(likeId);
                 UserSnsInfo liker = getUserSnsInfo(likeme.userId);
+                if (liker.userName == null ){
+                    liker.userName = likeme.userName;
+                    //Log.d("wechatmomentstat", "like me newname "+liker.userName);
+                    userSnsList.set(userSnsList_i, liker);
+                }
                 liker.likemeCount++;
             }
 
@@ -170,12 +183,14 @@ public class SnsStat {
     public UserSnsInfo getUserSnsInfo(String userId) {
         for (int i=0;i<userSnsList.size();i++) {
             if (userSnsList.get(i).userId.equals(userId)) {
+                userSnsList_i=i;
                 return userSnsList.get(i);
             }
         }
         UserSnsInfo userSnsInfo = new UserSnsInfo();
         userSnsInfo.userId = userId;
         userSnsList.add(userSnsInfo);
+        userSnsList_i=0;
         return userSnsInfo;
     }
 

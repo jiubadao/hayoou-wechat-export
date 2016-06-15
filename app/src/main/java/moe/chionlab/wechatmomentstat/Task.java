@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
@@ -15,9 +16,12 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +36,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.util.zip.GZIPOutputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -191,11 +197,11 @@ public class Task {
             JSONArray likesJSON = new JSONArray();
             JSONArray mediaListJSON = new JSONArray();
             try {
-                /*
                 snsJSON.put("isCurrentUser", currentSns.isCurrentUser);
                 snsJSON.put("snsId", currentSns.id);
                 snsJSON.put("authorName", currentSns.authorName);
                 snsJSON.put("authorId", currentSns.authorId);
+                snsJSON.put("userName", currentSns.userName);
                 snsJSON.put("content", currentSns.content);
                 for (int i = 0; i < currentSns.comments.size(); i++) {
                     JSONObject commentJSON = new JSONObject();
@@ -220,7 +226,6 @@ public class Task {
                     mediaListJSON.put(currentSns.mediaList.get(i));
                 }
                 snsJSON.put("mediaList", mediaListJSON);
-                */
                 snsJSON.put("rawXML", currentSns.rawXML);
                 snsJSON.put("timestamp", currentSns.timestamp);
 
@@ -245,6 +250,7 @@ public class Task {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(snsListJSON.toString());
             bw.close();
+            Config.filename=fileName.replace(Config.EXT_DIR+"/","");
 
             if(onlySelected )//onlySelected )//&&
             {
@@ -261,15 +267,97 @@ public class Task {
                     @Override
                     public void run() {
                         boolean isposting=false;
+                        /*
+                        File jsonFile1 = new File(Config.EXT_DIR+"/json_upload.zip");
+                        if (!jsonFile1.exists()) {
+                            try {
+                                jsonFile1.createNewFile();
+                            } catch (IOException e) {
+                                Log.e("wechatmomentstat", "exception", e);
+                            }
+                        }
+                        try {
+                            FileWriter fw = new FileWriter(jsonFile1.getAbsoluteFile());
+                            BufferedWriter bw = new BufferedWriter(fw);
+                            bw.write(Config.snsListJSONS);
+                            bw.close();
+                        } catch (IOException e) {
+                            Log.e("wechatmomentstat", "exception", e);
+                        }
+                        */
+                        try {
+                            String destDir = Config.EXT_DIR;
+                            Process su = Runtime.getRuntime().exec("su");
+                            //su.getInputStream().read();
+                            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+                            outputStream.writeBytes("cd " + destDir +"\n" );
+                            outputStream.writeBytes("tar jcf upload_json.bz2 "+ Config.filename+"\n");//
+                            outputStream.writeBytes("sleep 4\n");
+                            outputStream.writeBytes("chmod 777 upload_json.bz2\n");
+                            outputStream.writeBytes("exit\n");
+                            outputStream.flush();
+
+                            outputStream.close();
+                        } catch (IOException e) {
+                            Log.e("wechatmomentstat", "exception", e);
+                        }
+
+                        //File jsonFile1 = new File(Config.EXT_DIR+"/json_upload.bz2");
+                        //DataInputStream inputStream=new DataInputStream(context.getAssets().open("fileName.txt"));
+                        //InputStream is = getResources().getAssets().open("terms.txt");
+                        //String textfile = convertStreamToString(is);
+                        try {
+                            sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        int filesize=0;
+                        //char[] buffer=new char[5000000];
+                        byte[] fileData=new byte[1];
+                        String encodedUsername="";
+
+                        try {
+                            //AssetFileDescriptor descriptor = getAssets().openFd("myfile.txt");
+                            //FileReader reader = new FileReader(descriptor.getFileDescriptor());
+/*not work !
+                            FileReader fr = new FileReader(Config.EXT_DIR+"/upload_json.bz2");//(jsonFile1.getAbsoluteFile());
+                            BufferedReader br = new BufferedReader(fr);
+                            filesize = br.read(buffer,0,5000000);
+                            br.close();
+                            */
+                            encodedUsername = URLEncoder.encode(Config.username, "UTF-8");
+
+                            File file = new File(Config.EXT_DIR+"/upload_json.bz2");
+                            filesize = (int)file.length();
+                            fileData = new byte[(int) file.length()];
+                            DataInputStream dis = new DataInputStream(new FileInputStream(file));
+                            dis.readFully(fileData);
+                            dis.close();
+
+                        } catch (IOException e) {
+                            Log.e("wechatmomentstat", "exception", e);
+                        }
+
+                        String hayoou_url="http://f.hayoou.com/timline/import_wechat.php?username="
+                                +encodedUsername+"&APK_version=2&bz2=1";
+                        //HashMap<String, String> meMap= new HashMap<String, String>();
+                        //meMap.put("username", Config.username);
+                        //meMap.put("APK_version", "2");
+                        //meMap.put("bz2", "1");
 
 
-                        String hayoou_url="http://f.hayoou.com/timline/import_wechat.php?username1="+Config.username;
-                        HashMap<String, String> meMap= new HashMap<String, String>();
-                        meMap.put("username", Config.username);
-                        meMap.put("APK_version", "2");
-                        meMap.put("jsondata", Config.snsListJSONS);
-                        performPostCall(hayoou_url, meMap);
-
+                        if(filesize>0) {
+                            //String uploads =new String(buffer,0,filesize);
+                            //String uploads =String.valueOf(buffer,0,filesize);
+                            //meMap.put("jsondata", uploads);
+                            /*
+                            byte [] b=new byte[filesize];
+                            for (int i = 0; i < filesize; i++) {
+                                b[i] = (byte) buffer[i];
+                            }
+                            */
+                            performPostCall(hayoou_url, fileData, filesize);
+                        }
                         Config.dbgmsg = "Finish post ";
   /*
                         try {
@@ -329,14 +417,19 @@ public class Task {
 
             result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
             result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+            if(entry.getKey().equals((String)"jsondata"))
+            {
+                result.append(entry.getValue());
+            }
+            else
+                result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
         }
 
         return result.toString();
     }
 
-    public static  String  performPostCall(String requestURL,
-                                    HashMap<String, String> postDataParams) {
+    public static  String  performPostCall(String requestURL,byte[] buffer ,int filesize//HashMap<String, String> postDataParams
+                                    ) {
 
         URL url;
         String response = "";
@@ -344,20 +437,21 @@ public class Task {
             url = new URL(requestURL);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(200000);
-            conn.setConnectTimeout(200000);
+            conn.setReadTimeout(300000);
+            conn.setConnectTimeout(300000);
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
 
             OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
-
-            writer.flush();
-            writer.close();
+            //BufferedWriter writer = new BufferedWriter(
+            //        new OutputStreamWriter(os));//, "UTF-8"
+            //writer.write(poststr);//getPostDataString(postDataParams)
+            os.write(buffer,0,filesize);
+            os.flush();
+            //writer.flush();
+            //writer.close();
             os.close();
             //conn.connect();
 
@@ -380,5 +474,24 @@ public class Task {
 
         return response;
     }
+
+    public void pump(InputStream in, OutputStream out, int size) {
+        byte[] buffer = new byte[4096]; // Or whatever constant you feel like using
+        int done = 0;
+        while (done < size) {
+            try {
+                int read = in.read(buffer);
+                if (read == -1) {
+                    throw new IOException("Something went horribly wrong");
+                }
+                out.write(buffer, 0, read);
+                done += read;
+            } catch (IOException e) {
+                Log.e("wechatmomentstat", "exception", e);
+            }
+        }
+        // Maybe put cleanup code in here if you like, e.g. in.close, out.flush, out.close
+    }
+
 
 }

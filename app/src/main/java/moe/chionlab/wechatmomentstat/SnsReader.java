@@ -51,9 +51,6 @@ public class SnsReader {
         while (cursor.moveToNext()) {
             addSnsInfoFromCursor(cursor);
         }
-        if(this.currentUserId.length()>4)
-            Config.currentUserId = this.currentUserId;
-        //Config.currentUserName = this.currentUserId;
 
         cursor.close();
         database.close();
@@ -73,7 +70,9 @@ public class SnsReader {
     protected void addSnsInfoFromCursor(Cursor cursor) throws Throwable {
         byte[] snsDetailBin = cursor.getBlob(cursor.getColumnIndex("content"));
         byte[] snsObjectBin = cursor.getBlob(cursor.getColumnIndex("attrBuf"));
+
         SnsInfo newSns = parser.parseSnsAllFromBin(snsDetailBin, snsObjectBin);
+        newSns.userName = cursor.getBlob(cursor.getColumnIndex("username")).toString();
 
         for (int i=0;i<snsList.size();i++) {
             if (snsList.get(i).id.equals(newSns.id)) {

@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import moe.chionlab.wechatmomentstat.Model.SnsInfo;
 import moe.chionlab.wechatmomentstat.Model.UserSnsInfo;
@@ -59,18 +61,35 @@ public class UserSelectActivity extends AppCompatActivity {
 
     protected void loadUserList() {
         LinearLayout userListContainer = (LinearLayout)findViewById(R.id.user_list_container);
-        ArrayList<UserSnsInfo> userSnsList = Share.snsData.userSnsList;
+        //ArrayList<UserSnsInfo> userSnsList = Share.snsData.userSnsList;
         checkBoxList.clear();
         userListContainer.removeAllViews();
-        for (int i=0;i<userSnsList.size();i++) {
+        //userSnsList.get(i).snsList.size();
+        ArrayList<UserSnsInfo> snsSizeRank = Share.snsData.userSnsList;//new ArrayList<UserSnsInfo>(userSnsList);
+        Collections.sort(snsSizeRank, new Comparator<UserSnsInfo>() {
+            @Override
+            public int compare(UserSnsInfo lhs, UserSnsInfo rhs) {
+                if (rhs.snsList.size() - lhs.snsList.size() > 0) {
+                    return 1;
+                } else if (rhs.snsList.size() - lhs.snsList.size() < 0) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+
+        UserSnsInfo userSnsInfo2=null;
+        for (int i=0;i<snsSizeRank.size();i++) {
+            userSnsInfo2 = snsSizeRank.get(i);
             CheckBox userCheckBox = new CheckBox(this);
-            userCheckBox.setText(userSnsList.get(i).userName + "(" + userSnsList.get(i).userId + ")" + "(" + String.format(getString(R.string.user_moment_count), userSnsList.get(i).snsList.size()) + ")");
+            userCheckBox.setText(userSnsInfo2.authorName + "(" + userSnsInfo2.userName + ")" + "(" + String.format(getString(R.string.user_moment_count), userSnsInfo2.snsList.size()) + ")");
             userListContainer.addView(userCheckBox);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)userCheckBox.getLayoutParams();
             layoutParams.setMargins(5, 5, 5, 5);
             userCheckBox.setLayoutParams(layoutParams);
             userCheckBox.setChecked(true);
-            userCheckBox.setTag(userSnsList.get(i).userId);
+            userCheckBox.setTag(userSnsInfo2.userId);
             checkBoxList.add(userCheckBox);
         }
     }

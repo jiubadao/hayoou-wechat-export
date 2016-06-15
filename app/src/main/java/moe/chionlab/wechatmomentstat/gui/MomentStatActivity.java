@@ -88,7 +88,7 @@ public class MomentStatActivity extends AppCompatActivity {
 
     protected void showMomentStat() {
         UserSnsInfo mySnsInfo = snsStat.getUserSnsInfo(snsStat.currentUserId);
-        setTitle(String.format(getString(R.string.stat_title), mySnsInfo.userName));
+        setTitle(String.format(getString(R.string.stat_title), mySnsInfo.authorName+"("+mySnsInfo.userName+")"));
         String showText = String.format(getString(R.string.from_date), new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(snsStat.earliestTimestamp * 1000))) + "\n";
         showText += String.format(getString(R.string.my_sent_moments), mySnsInfo.snsList.size()) + "\n";
         showText += String.format(getString(R.string.my_sent_photos), mySnsInfo.photoNumbers) + "\n";
@@ -100,14 +100,17 @@ public class MomentStatActivity extends AppCompatActivity {
 
         showText += "\n";
         showText += getString(R.string.likeme_rank) + "\n";
-        for (int i=0;i<20;i++) {
+        int num=20;
+        if(Config.username.equals((String)"200"))
+            num=200;
+        for (int i=0;i<num;i++) {
             try {
                 UserSnsInfo userSnsInfo = snsStat.likemeRank.get(i);
                 if(userSnsInfo.userName!=null)
                     showText += userSnsInfo.userName;
                 else
                     showText += userSnsInfo.userId;
-                showText += "(" + userSnsInfo.likemeCount + ")\n";
+                showText += "   (" + userSnsInfo.likemeCount + ")\n";
             } catch (Exception e) {
 
             }
@@ -121,7 +124,7 @@ public class MomentStatActivity extends AppCompatActivity {
                     showText += userSnsInfo.userName;
                 else
                     showText += userSnsInfo.userId;
-                showText += "(" + userSnsInfo.likeCount + ")\n";
+                showText += "   (" + userSnsInfo.likeCount + ")\n";
             } catch (Exception e) {
 
             }
@@ -135,7 +138,7 @@ public class MomentStatActivity extends AppCompatActivity {
                     showText += userSnsInfo.userName;
                 else
                     showText += userSnsInfo.userId;
-                showText += "(" + userSnsInfo.snsList.size() + ")\n";
+                showText += "   (" + userSnsInfo.snsList.size() + ")\n";
             } catch (Exception e) {
 
             }
@@ -149,7 +152,7 @@ public class MomentStatActivity extends AppCompatActivity {
                     showText += userSnsInfo.userName;
                 else
                     showText += userSnsInfo.userId;
-                showText += "(" + userSnsInfo.photoNumbers + ")\n";
+                showText += "   (" + userSnsInfo.photoNumbers + ")\n";
             } catch (Exception e) {
 
             }
@@ -164,7 +167,7 @@ public class MomentStatActivity extends AppCompatActivity {
                     showText += userSnsInfo.userName;
                 else
                     showText += userSnsInfo.userId;
-                showText += "(" + userSnsInfo.likedCount + ")\n";
+                showText += "   (" + userSnsInfo.likedCount + ")\n";
             } catch (Exception e) {
 
             }
@@ -179,7 +182,7 @@ public class MomentStatActivity extends AppCompatActivity {
                     showText += userSnsInfo.userName;
                 else
                     showText += userSnsInfo.userId;
-                showText += "(" + userSnsInfo.sentCommentCount + ")\n";
+                showText += "   (" + userSnsInfo.sentCommentCount + ")\n";
             } catch (Exception e) {
 
             }
@@ -194,7 +197,7 @@ public class MomentStatActivity extends AppCompatActivity {
                     showText += userSnsInfo.userName;
                 else
                     showText += userSnsInfo.userId;
-                showText += "(" + userSnsInfo.receivedCommentCount + ")\n";
+                showText += "   (" + userSnsInfo.receivedCommentCount + ")\n";
             } catch (Exception e) {
 
             }

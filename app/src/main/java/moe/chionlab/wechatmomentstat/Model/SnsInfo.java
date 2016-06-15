@@ -12,6 +12,7 @@ public class SnsInfo {
     public String authorName = "";
     public String content = "";
     public String authorId = "";
+    public String userName = "";
     public ArrayList<Like> likes = new ArrayList<Like>();
     public ArrayList<Like> likeme = new ArrayList<Like>();
     public ArrayList<Comment> comments = new ArrayList<Comment>();
