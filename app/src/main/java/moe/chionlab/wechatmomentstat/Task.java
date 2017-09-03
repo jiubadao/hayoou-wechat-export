@@ -37,6 +37,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Enumeration;
+import dalvik.system.DexFile;
+
+
 import java.util.zip.GZIPOutputStream;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -87,9 +91,16 @@ public class Task {
         Process su = Runtime.getRuntime().exec("su");
         DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
         outputStream.writeBytes("mount -o remount,rw " + dataDir + "\n");
+        outputStream.writeBytes("rm " + destDir + "/SnsMicroMsg0.db -f\n");
+        if(Config.username.equals(new String("0")))
+        {
+            outputStream.writeBytes("rm " + destDir + "/wechat.apk -f\n");
+        }
+        outputStream.writeBytes("mv " + destDir + "/SnsMicroMsg.db "+ destDir + "/SnsMicroMsg0.db -f\n");
+        outputStream.writeBytes("sleep 1\n");
         outputStream.writeBytes("cd " + dataDir + "/data/" + Config.WECHAT_PACKAGE + "/MicroMsg\n");
         outputStream.writeBytes("ls | while read line; do cp ${line}/SnsMicroMsg.db " + destDir + "/ ; done \n");
-        outputStream.writeBytes("sleep 1\n");
+        outputStream.writeBytes("sleep 2\n");
         outputStream.writeBytes("chmod 777 " + destDir + "/SnsMicroMsg.db\n");
         outputStream.writeBytes("exit\n");
         outputStream.flush();
@@ -161,7 +172,7 @@ public class Task {
 
         try {
 
-            Config.initWeChatVersion("6.3.13.64_r4488992");
+            Config.initWeChatVersion("6.5.13");
             DexClassLoader cl = new DexClassLoader(
                     outputAPKFile.getAbsolutePath(),
                     context.getDir("outdex", 0).getAbsolutePath(),

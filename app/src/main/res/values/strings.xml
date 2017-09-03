@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">哈友微信朋友圈分析</string>
-    <string name="not_rooted">查询微信缓存失败。请允许root权限后重试。</string>
+    <string name="not_rooted">查询微信缓存失败。请重试。</string>
     <string name="wechat_version_label">微信版本</string>
     <string name="wechat_version_supported">恭喜，支持该微信版本</string>
     <string name="wechat_version_unsupported">暂不支持该微信版本</string>
@@ -8,7 +8,7 @@
     <string name="supported_wechat_versions">支持的微信版本</string>
     <string name="launch">开始分析你的朋友圈</string>
     <string name="description_0">哈友微信朋友圈分析可分析和导出你的朋友圈数据。</string>
-    <string name="description_1">请确认已允许本APP获得root权限。</string>
+    <string name="description_1">请确认已允许本APP获得root权限。如无法使用请安装kingroot/清除微信缓存/更新微信微信朋友圈/删除WeChatMomentStat文件夹并</string>
     <string name="description_2">点击“运行”开始分析你的微信朋友圈。这将需要几分钟时间。</string>
     <string name="exporting_sns">正在导出朋友圈数据...</string>
     <string name="stat_title">%s 的朋友圈统计数据</string>
