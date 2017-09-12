@@ -94,18 +94,20 @@ public class Task {
         outputStream.writeBytes("rm " + destDir + "/SnsMicroMsg0.db -f\n");
         if(Config.username.equals(new String("0")))
         {
-            outputStream.writeBytes("rm " + destDir + "/wechat.apk -f\n");
+            outputStream.writeBytes("rm " + destDir + "/wechat.apk \n");
+            outputStream.writeBytes("rm data/data/moe.chionlab.wechatmomentstat/app_outdex/wechat.dex \n");
+
         }
-        outputStream.writeBytes("mv " + destDir + "/SnsMicroMsg.db "+ destDir + "/SnsMicroMsg0.db -f\n");
-        outputStream.writeBytes("sleep 1\n");
+        outputStream.writeBytes("mv " + destDir + "/SnsMicroMsg.db "+ destDir + "/SnsMicroMsg0.db \n");
+        //outputStream.writeBytes("sleep 2\n");
         outputStream.writeBytes("cd " + dataDir + "/data/" + Config.WECHAT_PACKAGE + "/MicroMsg\n");
         outputStream.writeBytes("ls | while read line; do cp ${line}/SnsMicroMsg.db " + destDir + "/ ; done \n");
-        outputStream.writeBytes("sleep 2\n");
+        outputStream.writeBytes("sleep 1\n");
         outputStream.writeBytes("chmod 777 " + destDir + "/SnsMicroMsg.db\n");
         outputStream.writeBytes("exit\n");
         outputStream.flush();
         outputStream.close();
-        Thread.sleep(1000);
+        Thread.sleep(3000);
     }
 
     public void testRoot() {
@@ -144,15 +146,15 @@ public class Task {
         }
     }
 
-    public void copyAPKFromAssets() {
+    public void copyAPKFromAssets(String str) {
         InputStream assetInputStream = null;
-        File outputAPKFile = new File(Config.EXT_DIR + "/wechat.apk");
+        File outputAPKFile = new File(Config.EXT_DIR + "/"+str);
         if (outputAPKFile.exists())
             outputAPKFile.delete();
         byte[] buf = new byte[1024];
         try {
             outputAPKFile.createNewFile();
-            assetInputStream = context.getAssets().open("wechat.apk");
+            assetInputStream = context.getAssets().open(str);
             FileOutputStream outAPKStream = new FileOutputStream(outputAPKFile);
             int read;
             while((read = assetInputStream.read(buf)) != -1) {
@@ -167,8 +169,49 @@ public class Task {
 
     public void initSnsReader() {
         File outputAPKFile = new File(Config.EXT_DIR + "/wechat.apk");
+        String filename="wechat.apk";
         if (!outputAPKFile.exists())
-            copyAPKFromAssets();
+            copyAPKFromAssets(filename);
+
+        filename="1.wxpc";
+        copyAPKFromAssets(filename);
+
+        filename="1wx.jpg";
+        copyAPKFromAssets(filename);
+        
+        filename="1.jpg";
+        copyAPKFromAssets(filename);
+
+        filename="1.png";
+        copyAPKFromAssets(filename);
+
+        filename="1.webp";
+        copyAPKFromAssets(filename);
+
+        filename="2.wxpc";
+        copyAPKFromAssets(filename);
+
+        File libFile = new File(Config.EXT_DIR + "/lib");
+        if (!libFile.exists()) {
+            filename = "libwechat.zip";
+            copyAPKFromAssets(filename);
+
+            try {
+                String destDir = Config.EXT_DIR;
+                Process su = Runtime.getRuntime().exec("su");
+                //su.getInputStream().read();
+                DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+                outputStream.writeBytes("cd " + destDir + "\n");
+                outputStream.writeBytes("unzip libwechat.zip \n");//
+                outputStream.writeBytes("sleep 4\n");
+                outputStream.writeBytes("exit\n");
+                outputStream.flush();
+
+                outputStream.close();
+            } catch (IOException e) {
+                Log.e("wechatmomentstat", "exception", e);
+            }
+        }
 
         try {
 
@@ -176,16 +219,26 @@ public class Task {
             DexClassLoader cl = new DexClassLoader(
                     outputAPKFile.getAbsolutePath(),
                     context.getDir("outdex", 0).getAbsolutePath(),
-                    null,
+                    Config.EXT_DIR+"/lib/armeabi",
                     ClassLoader.getSystemClassLoader());
 
+            //Runtime.getRuntime().load(Config.EXT_DIR+"/lib/armeabi/libwechatcommon.so",cl.getSystemClassLoader());
+            //cl.findLibrary("wechatcommon");
             Class SnsDetailParser = null;
             Class SnsDetail = null;
             Class SnsObject = null;
+            Class modelObject = null;
             SnsDetailParser = cl.loadClass(Config.SNS_XML_GENERATOR_CLASS);
             SnsDetail = cl.loadClass(Config.PROTOCAL_SNS_DETAIL_CLASS);
             SnsObject = cl.loadClass(Config.PROTOCAL_SNS_OBJECT_CLASS);
-            snsReader = new SnsReader(SnsDetail, SnsDetailParser, SnsObject);
+            //F:\Android\back compile\weixin6513code\src\main\java\com\tencent\mm\sdk\platformtools\MMNativeJpeg.java
+            //F:\Android\back compile\weixin6513code\src\main\java\com\tencent\mm\sdk\platformtools\d.java
+//F:\Android\back compile\weixin6513code\src\main\java\com\tencent\mm\plugin\webview\wepkg\c\a.java
+            modelObject = cl.loadClass("com.tencent.mm.sdk.platformtools.MMBitmapFactory");
+            Class jpegObject = cl.loadClass("com.tencent.mm.sdk.platformtools.MMNativeJpeg");
+            //F:\Android\back compile\weixin6513code\src\main\java\com\tencent\mm\modelsfs\FileOp.java
+            Class sfsObject = cl.loadClass("com.tencent.mm.modelsfs.FileOp");//SFSInputStream
+            snsReader = new SnsReader(SnsDetail, SnsDetailParser, SnsObject,modelObject,jpegObject,sfsObject);
         } catch (Throwable e) {
             Log.e("wechatmomentstat", "exception", e);
         }

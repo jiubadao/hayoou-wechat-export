@@ -17,15 +17,23 @@ public class SnsReader {
     Class SnsDetail = null;
     Class SnsDetailParser = null;
     Class SnsObject = null;
+    Class ModelObject = null;
+    Class JpegObject = null;
+    Class sfsObject=null;
     Parser parser = null;
     ArrayList<SnsInfo> snsList = new ArrayList<SnsInfo>();
     String currentUserId = "";
 
-    public SnsReader(Class SnsDetail, Class SnsDetailParser, Class SnsObject){
+
+    public SnsReader(Class SnsDetail, Class SnsDetailParser, Class SnsObject,
+                     Class ModelObject, Class JpegObject ,Class sfsObject){
         this.SnsDetail = SnsDetail;
         this.SnsDetailParser = SnsDetailParser;
         this.SnsObject = SnsObject;
-        this.parser = new Parser(SnsDetail, SnsDetailParser, SnsObject);
+        this.ModelObject = ModelObject;
+        this.JpegObject = JpegObject;
+        this.sfsObject = sfsObject;
+        this.parser = new Parser(SnsDetail, SnsDetailParser, SnsObject,ModelObject,JpegObject,sfsObject);
     }
 
     public void run() throws Throwable {

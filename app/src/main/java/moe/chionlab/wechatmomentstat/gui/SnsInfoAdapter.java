@@ -93,7 +93,7 @@ public class SnsInfoAdapter extends ArrayAdapter<SnsInfo> {
 
             try {
                 String imageUrl = snsInfo.mediaList.get(i);
-                if (imageUrl.startsWith("http://mmsns.qpic.cn/mmsns")) {
+                if (imageUrl.startsWith("http://")) {
 
                     viewHolder.photoContainer.addView(snsImageView);
 

@@ -29,16 +29,19 @@ public class Config {
     final static public String[] PROTOCAL_SNS_OBJECT_TIMESTAMP_FIELDS = {"fpL", "ofk"};
     final static public String[] PROTOCAL_SNS_OBJECT_COMMENTS_FIELDS = {"jJX", "uaE"};
     final static public String[] PROTOCAL_SNS_OBJECT_LIKES_FIELDS = {"jJU", "uaB"};
+    final static public String[] PROTOCAL_SNS_OBJECT_LinkedList_ale0={"","udP"};
+    final static public String[] PROTOCAL_SNS_OBJECT_LinkedList_ale={"","trg"};
     final static public String[] SNS_OBJECT_EXT_AUTHOR_NAME_FIELDS = {"jyd", "tLN"};
-    //not used
-    final static public String[] SNS_OBJECT_EXT_REPLY_TO_FIELDS = {"jJM", "jJM"};
-    //not used
-    final static public String[] SNS_OBJECT_EXT_COMMENT_FIELDS = {"fsI", "fsI"};
+
+    //found in 6313 apz.java,6513 baw.java
+    final static public String[] SNS_OBJECT_EXT_REPLY_TO_FIELDS = {"jJM", "uas"};
+
+    final static public String[] SNS_OBJECT_EXT_COMMENT_FIELDS = {"fsI", "oog"};
     final static public String[] SNS_OBJECT_EXT_AUTHOR_ID_FIELDS = {"iYA", "tfa"};
     //not used
-    final static public String[] SNS_DETAIL_FROM_BIN_METHODS = {"am", "am"};
+    final static public String[] SNS_DETAIL_FROM_BIN_METHODS = {"am", "aD"};
     //not used
-    final static public String[] SNS_OBJECT_FROM_BIN_METHODS = {"am", "am"};
+    final static public String[] SNS_OBJECT_FROM_BIN_METHODS = {"am", "aD"};
 
     static public String PROTOCAL_SNS_DETAIL_CLASS;
     static public String PROTOCAL_SNS_DETAIL_METHOD;
@@ -51,6 +54,8 @@ public class Config {
     static public String PROTOCAL_SNS_OBJECT_TIMESTAMP_FIELD;
     static public String PROTOCAL_SNS_OBJECT_COMMENTS_FIELD;
     static public String PROTOCAL_SNS_OBJECT_LIKES_FIELD;
+    static public String PROTOCAL_SNS_OBJECT_LinkedList_ale0_FIELD;
+    static public String PROTOCAL_SNS_OBJECT_LinkedList_ale_FIELD;
     static public String SNS_OBJECT_EXT_AUTHOR_NAME_FIELD;
     static public String SNS_OBJECT_EXT_REPLY_TO_FIELD;
     static public String SNS_OBJECT_EXT_COMMENT_FIELD;
@@ -90,6 +95,9 @@ public class Config {
         PROTOCAL_SNS_OBJECT_TIMESTAMP_FIELD = PROTOCAL_SNS_OBJECT_TIMESTAMP_FIELDS[index];
         PROTOCAL_SNS_OBJECT_COMMENTS_FIELD = PROTOCAL_SNS_OBJECT_COMMENTS_FIELDS[index];
         PROTOCAL_SNS_OBJECT_LIKES_FIELD = PROTOCAL_SNS_OBJECT_LIKES_FIELDS[index];
+        PROTOCAL_SNS_OBJECT_LinkedList_ale0_FIELD =PROTOCAL_SNS_OBJECT_LinkedList_ale0[index];
+        PROTOCAL_SNS_OBJECT_LinkedList_ale_FIELD =PROTOCAL_SNS_OBJECT_LinkedList_ale[index];
+
         SNS_OBJECT_EXT_AUTHOR_NAME_FIELD = SNS_OBJECT_EXT_AUTHOR_NAME_FIELDS[index];
         SNS_OBJECT_EXT_REPLY_TO_FIELD = SNS_OBJECT_EXT_REPLY_TO_FIELDS[index];
         SNS_OBJECT_EXT_COMMENT_FIELD = SNS_OBJECT_EXT_COMMENT_FIELDS[index];
