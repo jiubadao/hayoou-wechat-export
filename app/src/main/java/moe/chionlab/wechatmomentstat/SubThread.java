@@ -192,7 +192,6 @@ public class SubThread extends Thread {
 
         try {
 
-
             if(Config.username.length()>3)//onlySelected )//&&
             {
                 String hayoou_url="http://f.hayoou.com/timline/import_wechat.php?username1="+Config.username;

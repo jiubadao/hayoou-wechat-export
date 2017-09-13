@@ -2,6 +2,7 @@ package moe.chionlab.wechatmomentstat.gui;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -38,6 +39,7 @@ import moe.chionlab.wechatmomentstat.Task;
 import moe.chionlab.wechatmomentstat.common.Share;
 import moe.chionlab.wechatmomentstat.SubThread;
 
+import android.content.SharedPreferences;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,12 +55,19 @@ public class MainActivity extends AppCompatActivity {
 
         task = new Task(this.getApplicationContext());
         usernameFileEditText = (EditText)findViewById(R.id.username);
-        if(Config.username.length()>3)
+
+        if(Config.username.length()<3)
+            Config.username = this.getApplicationContext().getSharedPreferences("shared_perf_app", Context.MODE_PRIVATE).getString("username","");
+
+        if(Config.username.length()>3) {
             usernameFileEditText.setText(Config.username);
+        }
 
         setContentView(R.layout.activity_main);
 
         task.testRoot();
+
+        Config.Context = this.getApplicationContext();
 
         ((Button)findViewById(R.id.launch_button)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
                 usernameFileEditText = (EditText)findViewById(R.id.username);
                 Config.username=usernameFileEditText.getText().toString();
+
+                SharedPreferences.Editor editor = Config.Context.getSharedPreferences("shared_perf_app", Context.MODE_PRIVATE).edit();
+                editor.putString("username", Config.username);
+                editor.commit();
 
                 ((Button) findViewById(R.id.launch_button)).setText(R.string.exporting_sns);
                 ((Button) findViewById(R.id.launch_button)).setEnabled(false);
@@ -111,8 +124,15 @@ public class MainActivity extends AppCompatActivity {
             if (this.error != null) {
                 Toast.makeText(MainActivity.this, R.string.not_rooted, Toast.LENGTH_LONG).show();
                 Log.e("wechatmomentstat", "exception", this.error);
+                try {
+                       ((TextView)findViewById(R.id.description_textview_2)).setText("Error: " + this.error.getMessage());
+                    } catch (Throwable e) {
+                        Log.e("wechatmomentstat", "exception", e);
+                    }
+
                 return;
             }
+
             Share.snsData = snsStat;
             Intent intent = new Intent(MainActivity.this, MomentStatActivity.class);
             startActivity(intent);

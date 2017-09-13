@@ -1,7 +1,7 @@
 package moe.chionlab.wechatmomentstat;
 
 import android.os.Environment;
-
+import android.content.Context;
 /**
  * Created by chiontang on 2/4/16.
  */
@@ -42,6 +42,8 @@ public class Config {
     final static public String[] SNS_DETAIL_FROM_BIN_METHODS = {"am", "aD"};
     //not used
     final static public String[] SNS_OBJECT_FROM_BIN_METHODS = {"am", "aD"};
+
+    static public Context Context;
 
     static public String PROTOCAL_SNS_DETAIL_CLASS;
     static public String PROTOCAL_SNS_DETAIL_METHOD;

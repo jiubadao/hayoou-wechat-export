@@ -70,7 +70,8 @@ public class Parser {
         this.ModelClass = ModelClass;
         this.JpegObject = JpegObject;
         this.sfsObject =  sfsObject;
-        loadlib(new String().valueOf(testlong));
+        inited = false;
+        //loadlib(new String().valueOf(testlong));
     }
     public static void loadlib(String str){
         //System.load(str);
@@ -142,10 +143,10 @@ public class Parser {
     //static
     public SnsInfo parseTimelineXML(String xmlResult) throws Throwable {
         SnsInfo currentSns = new SnsInfo();
-        Pattern userIdPattern = Pattern.compile("<username><!\\[CDATA\\[(.+?)\\]\\]></username>");
+        Pattern userIdPattern = Pattern.compile("<username><!\\[CDATA\\[(.+?)\\]\\]></username>",Pattern.DOTALL);
         Pattern contentPattern = Pattern.compile("<contentDesc><!\\[CDATA\\[(.+?)\\]\\]></contentDesc>", Pattern.DOTALL);
-        Pattern mediaPattern = Pattern.compile("<media>.*?<url.*?><!\\[CDATA\\[(.+?)\\]\\]></url>.*?</media>");
-        Pattern mediaTokenPattern = Pattern.compile("<media>.*?<url.*?><!\\[CDATA\\[(.+?)\\]\\]></url>.*?<urltoken.*?><!\\[CDATA\\[(.+?)\\]\\]></urltoken>.*?<urlidx.*?><!\\[CDATA\\[(.+?)\\]\\]></urlidx>.*?<urlenc.*?><!\\[CDATA\\[(.+?)\\]\\]></urlenc>.*?<urlenckey.*?><!\\[CDATA\\[(.+?)\\]\\]></urlenckey>.*?</media>");
+        Pattern mediaPattern = Pattern.compile("<media>.*?<url.*?><!\\[CDATA\\[(.+?)\\]\\]></url>.*?</media>",Pattern.DOTALL);
+        Pattern mediaTokenPattern = Pattern.compile("<media>.*?<url.*?><!\\[CDATA\\[(.+?)\\]\\]></url>.*?<urltoken.*?><!\\[CDATA\\[(.+?)\\]\\]></urltoken>.*?<urlidx.*?><!\\[CDATA\\[(.+?)\\]\\]></urlidx>.*?<urlenc.*?><!\\[CDATA\\[(.+?)\\]\\]></urlenc>.*?<urlenckey.*?><!\\[CDATA\\[(.+?)\\]\\]></urlenckey>.*?</media>",Pattern.DOTALL);
         Pattern mediaIdxPattern = Pattern.compile("<media>.*?<urlenckey.*?><!\\[CDATA\\[(.+?)\\]\\]></urlenckey>.*?</media>");
         Pattern timestampPattern = Pattern.compile("<createTime><!\\[CDATA\\[(.+?)\\]\\]></createTime>");
 
@@ -287,7 +288,7 @@ public class Parser {
                 Method decodeFileMethod2 = null;
                 Method nativeCheckIsImageLegalMethod = null;
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
+                //options.inJustDecodeBounds = true;
                 Method[] methods = ModelClass.getDeclaredMethods();
                 //Log.d("wechatmomentstat", "MethodDeclaration in " + ModelClass.getName());
                 String[] initlib = new String[]{Config.EXT_DIR+"/lib/armeabi/libvoipCodec_v7a.so"};
@@ -295,9 +296,10 @@ public class Parser {
                 for(Method method : methods){
                     method.setAccessible(true);
                     //Log.d("wechatmomentstat", method.getName());
-                    if(method.getName()=="decodeByteArrayWithMMDecoderIfPossible")//nativeDecodeStream decodeByteArrayWithMMDecoderIfPossible
-                        decodeFileMethod = method;
-                    if(method.getName()=="decodeByteArrayWithSystemDecoder")
+                    //if(method.getName()=="decodeStreamWithMMDecoderIfPossible")// nativeDecodeStream decodeByteArrayWithMMDecoderIfPossible
+                    if(method.getName()=="decodeByteArrayWithMMDecoderIfPossible")
+                            decodeFileMethod = method;
+                    if(method.getName()=="decodeStreamWithSystemDecoder")//decodeByteArrayWithSystemDecoder
                         decodeFileMethod2 = method;
                     if("nativeInit"==method.getName() && (!inited))
                         if((boolean)method.invoke(ModelClass, new Object[]{initlib})) {
@@ -378,10 +380,10 @@ public class Parser {
 
                 InputStream inputStream5 = null;
                 Method FileOp_openread = sfsObject.getMethod("openRead",String.class);
-                inputStream5 = (InputStream)FileOp_openread.invoke(this,Config.EXT_DIR+
-                        "/2.wxpc");
-                Bitmap bitmap = (Bitmap)decodeFileMethod.invoke(ModelClass2,
-                        //inputStream5,new byte[8192],null,options,null,new int[0]);
+                inputStream5 = (InputStream)FileOp_openread.invoke(ModelClass,Config.EXT_DIR+
+                        "/1.wxpc");
+                Bitmap bitmap = (Bitmap)decodeFileMethod.invoke(ModelClass,
+                        //inputStream5,new byte[8192],null,null,null,new int[0]);
                         //fileIutputStream4,null,null,null,new int[0]);
                         fileData,0,(int) file1.length(),null,null,new int[0]);
                 if(bitmap!=null)
@@ -395,20 +397,21 @@ public class Parser {
                 Log.d("wechatmomentstat", "fileData "+msg);
 
                 bitmap = (Bitmap)decodeFileMethod2.invoke(ModelClass,
-                        fileData,0,(int) file1.length(),null,null);
+                        fileIutputStream4,null,null,null);
+                        //fileData,0,(int) file1.length(),null,null);
                 if(bitmap!=null)
                     Log.d("wechatmomentstat", "bitmap size1 "+bitmap.getByteCount());
 
                 bitmap = (Bitmap)decodeAsBitmapMethod.invoke(ModelClass,path);
-*/
 
+*/
                 if(bitmap!=null) {
                     Log.d("wechatmomentstat", "bitmap size2 " + bitmap.getByteCount());
 
                     //Bitmap bitmap = decodeAsBitmap(path);
                     File file = new File(path + ".png");
                     if (file.exists()) {
-                        file.delete();
+                        //file.delete();
                     }
                     try {
                         OutputStream fileOutputStream = new FileOutputStream(file);

