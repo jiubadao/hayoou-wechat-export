@@ -413,13 +413,15 @@ public class Parser {
                     if (file.exists()) {
                         //file.delete();
                     }
-                    try {
-                        OutputStream fileOutputStream = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-                        fileOutputStream.close();
+                    else {
+                        try {
+                            OutputStream fileOutputStream = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                            fileOutputStream.close();
 
-                    } catch (Throwable e) {
-                        Log.d("wechatmomentstat", "save file error");
+                        } catch (Throwable e) {
+                            Log.d("wechatmomentstat", "save file error");
+                        }
                     }
                 }
 

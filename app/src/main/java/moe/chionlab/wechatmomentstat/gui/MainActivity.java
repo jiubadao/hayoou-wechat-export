@@ -59,8 +59,10 @@ public class MainActivity extends AppCompatActivity {
         if(Config.username.length()<3)
             Config.username = this.getApplicationContext().getSharedPreferences("shared_perf_app", Context.MODE_PRIVATE).getString("username","");
 
-        if(Config.username.length()>3) {
-            usernameFileEditText.setText(Config.username);
+        if(Config.username.length()>3 && Config.username!=null) {
+            CharSequence u = Config.username;
+            Log.d("wechatmomentstat", "u "+u);
+            //usernameFileEditText.setText(u);
         }
 
         setContentView(R.layout.activity_main);
